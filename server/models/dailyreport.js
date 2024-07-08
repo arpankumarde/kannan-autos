@@ -1,7 +1,7 @@
-import { UUIDV4 } from "sequelize";
+import { DataTypes, UUIDV4 } from "sequelize";
 
-const dailyreport = (sequelize, DataTypes) => {
-  return sequelize.define("daily report", {
+const dailyreport = (sequelize) => {
+  return sequelize.define("daily_report", {
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
@@ -11,14 +11,11 @@ const dailyreport = (sequelize, DataTypes) => {
     Date: {
       type: DataTypes.DATEONLY,
       defaultValue: DataTypes.NOW,
-      set(value) {
-        const reversedDate = value.split('-').reverse().join('-');
-        this.setDataValue('Date', reversedDate);
-      }
     },
     source: {
       type: DataTypes.STRING,
       unique: true,
+      allowNull: false
     },
     Enquiry: {
       type: DataTypes.JSON,
@@ -57,6 +54,8 @@ const dailyreport = (sequelize, DataTypes) => {
         YTD: 0,
       },
     },
+  }, {
+    timestamps: true,
   });
 };
 
