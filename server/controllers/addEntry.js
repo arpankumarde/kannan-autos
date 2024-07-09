@@ -2,10 +2,12 @@ import asyncHandler from "express-async-handler";
 import db from "../db/database.js";
 
 export const createDailyReport = asyncHandler(async (req, res) => {
-  const { source } = req.body
+  const { source, date } = req.body
   try {
     const result = await db.DailyReport_model.create({
+      Date: date,
       source: source,
+
     });
     console.log(result.toJSON());
     res.status(200).send({ msg: "model created" });
@@ -43,6 +45,7 @@ export const createInsuranceReport = asyncHandler(async (req, res) => {
       MinimumAmount: MinimumAmount,
       ContactNumber: ContactNumber,
       CustomerName: CustomerName,
+      followUpDate: ""
     });
 
     console.log(result.toJSON());

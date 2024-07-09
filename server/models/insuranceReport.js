@@ -44,13 +44,6 @@ const insuranceReport = (sequelize, DataTypes) => {
     EndDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-      set(value) {
-        const reversedDate = value.split('-').reverse().join('-');
-        this.setDataValue('EndDate', reversedDate);
-        const endDate = new Date(value);
-        endDate.setDate(endDate.getDate() - 1);
-        this.setDataValue('followUpDate', endDate.toISOString().split('T')[0]);
-      }
     },
     IDVValue: {
       type: DataTypes.INTEGER,
@@ -61,7 +54,7 @@ const insuranceReport = (sequelize, DataTypes) => {
       allowNull: false,
     },
     ContactNumber: {
-      type: DataTypes.INTEGER, 
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     CustomerName: {
@@ -69,17 +62,19 @@ const insuranceReport = (sequelize, DataTypes) => {
       allowNull: false,
     },
     followUpDate: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.STRING,
       allowNull: true,
-      get() {
-        const endDate = this.getDataValue('EndDate');
+      set(value) {
+        const endDate = this.getDataValue("EndDate");
         if (endDate) {
-          const followUpDate = new Date(endDate);
-          followUpDate.setDate(followUpDate.getDate() - 1);
-          return followUpDate.toISOString().split('T')[0];
+          const date = new Date(endDate);
+          date.setDate(date.getDate() - 1);
+          const followUpDate = date.toISOString().split('T')[0];
+          this.setDataValue("followUpDate", followUpDate);
+        } else {
+          this.setDataValue("followUpDate", "dummy sirey");
         }
-        return null;
-      }
+      },
     },
   });
 };

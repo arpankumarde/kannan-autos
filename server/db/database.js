@@ -31,7 +31,7 @@ db.init = async () => {
     db.DailyReport_model = DailyReport(sequelize, DataTypes);
     db.Insurance_model = insuranceReport(sequelize, DataTypes);
     
-    await db.sequelize.sync({ alter: true });
+    await db.sequelize.sync({ force : true });
 
     return db;
   } catch (error) {
